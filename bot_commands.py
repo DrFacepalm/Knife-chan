@@ -1,3 +1,7 @@
+# Knife-chan discord bot, bot for personal moderation of
+# a discord server during the bot wars.
+# Author: Lucas Lin
+
 from discord.ext import commands
 from discord import Embed
 import keyboard_scraper as ks
@@ -30,7 +34,7 @@ async def _testing(ctx, *args):
 #################
 def is_target(m):
     result = False
-    if str(m.channel.id) in purge_target.keys():
+    if m.channel.id in purge_target.keys():
         result = m.author.discriminator == purge_target[m.channel.id]["discriminator"]
     return result
 

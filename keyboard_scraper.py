@@ -1,3 +1,6 @@
+# Web scraper for scraping GB on geekhack
+# Author: Lucas Lin
+
 import bs4 as bs
 import urllib.request
 
