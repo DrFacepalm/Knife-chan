@@ -15,10 +15,10 @@ bot = commands.Bot(command_prefix='!')
 async def on_message(message):
     if message.author.bot and message.author.name != "Knife-chan":
         # add to dictionary
-        bot_commands.last_bot[message.channel.id] = {"discriminator": message.author.discriminator, "name": message.author.name}
+        bot_commands.purge_target[message.channel.id] = {"discriminator": message.author.discriminator, "name": message.author.name}
 
     print("Marked bots for death")
-    print(bot_commands.last_bot)
+    print(bot_commands.purge_target)
     await bot.process_commands(message)
 
 @bot.event

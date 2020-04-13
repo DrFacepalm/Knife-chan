@@ -3,7 +3,7 @@ from discord import Embed
 import keyboard_scraper as ks
 
 # Channel id and bot user
-last_bot = {}
+purge_target = {}
 
 ################
 # PING COMMAND #
@@ -30,21 +30,37 @@ async def _testing(ctx, *args):
 #################
 def is_target(m):
     result = False
-    if str(m.channel.id) in last_bot.keys():
-        result = m.author.discriminator == last_bot[m.channel.id]["discriminator"]
+    if str(m.channel.id) in purge_target.keys():
+        result = m.author.discriminator == purge_target[m.channel.id]["discriminator"]
     return result
+
+def get_limit(args):
+    lim_set = False
+    limit = 10
+    for arg in args:
+        try:
+            if not lim_set:
+                limit = int(arg)
+                lim_set = True
+        except ValueError:
+            pass
+    return limit
 
 @commands.command(name='purge')
 async def _purge(ctx, *args):
     if ("Moderator" in (r.name for r in ctx.author.roles)):
-        # for mention bot
-        if (len(ctx.message.mentions) > 0):
-            last_bot[str(ctx.message.channel.id)] = {"discriminator": ctx.message.mentions[0].discriminator, "name": ctx.message.mentions[0].name}
 
-        deleted = await ctx.channel.purge(limit=10, check=is_target)
-        for msg in deleted:
-            print(msg.author.name)
-        await ctx.send("Purged! {}".format(len(deleted)), delete_after=5.0)
+        # If a user is mentioned
+        if (len(ctx.message.mentions) > 0):
+            purge_target[ctx.message.channel.id] = {"discriminator": ctx.message.mentions[0].discriminator, "name": ctx.message.mentions[0].name}
+
+        # Get the number argument if exist
+        limit = get_limit(args)
+
+        deleted = await ctx.channel.purge(limit=limit, check=is_target)
+
+        name = purge_target[ctx.message.channel.id]["name"]
+        await ctx.send(f"Purged {len(deleted)} messages from {name} out of the last {limit} messages", delete_after=5.0)
     else:
         await ctx.send("Sorry {} you don't have permission to do this".format(ctx.message.author.name), delete_after=60.0)
 
@@ -53,9 +69,12 @@ async def _purge(ctx, *args):
 #####################
 def create_message(list):
     message = ""
-    i = 1
-    while i <= 10:
-        message += f"`{i}.`[{list[i][1]}]({list[i][0]})\n"
+    i = 0
+    max = 10
+    if len(list) < 10:
+        max = len(list)
+    while i < max:
+        message += f"`{i+1}.`[{list[i][1]}]({list[i][0]})\n"
         i += 1
     return message
 
@@ -78,4 +97,50 @@ async def _troll(ctx):
 
 
 if __name__ == "__main__":
-    pass
+    
+    failed = 0
+    # Purge testing
+    if (get_limit([2, 3, 4, 5]) != 2):
+        failed += 1
+        print("get_limit: [2, 3, 4, 5] failed")
+    if (get_limit([2, "bad type"]) != 2):
+        failed += 1
+        print("get_limit: [2, \"bad type\"] failed")
+    if (get_limit(["username", 4]) != 4):
+        failed += 1
+        print("get_limit: [\"username\", 4]")
+    if (get_limit(["username", 4, 5, 6, "bad"]) != 4):
+        failed += 1
+        print("get_limit: [\"username\", 4, 5, 6, \"bad\"]")
+    print(f"Purge failed {failed}" if failed != 0 else "Purge Passed\n")
+
+    failed = 0
+    # Keybooards Testing
+    input_long = [
+            ("https://shelloworldhelloworld.com", "1....."), 
+            ("https://shelloworldhelloworld.com", "2....."),
+            ("https://shelloworldhelloworld.com", "3......"),
+            ("https://shelloworldhelloworld.com", "namenamename"),
+            ("https://shelloworldhelloworld.com", "naggggggname"),
+            ("https://shelloworldhelloworld.com", "namenamename"), 
+            ("https://shelloworldhelloworld.com", "namenamename"),
+            ("https://shelloworldhelloworld.com", "namenasdfname"),
+            ("https://shelloworldhelloworld.com", "namenamename"),
+            ("https://shelloworldhelloworld.com", "naggggggname"),
+            ("https://shelloworldhelloworld.com", "namenamename"), 
+            ("https://shelloworldhelloworld.com", "namenamename"),
+            ("https://shelloworldhelloworld.com", "namenasdfname"),
+            ("https://shelloworldhelloworld.com", "namenamename"),
+            ("https://shelloworldhelloworld.com", "naggggggname")
+    ]
+    input_short = [
+            ("https://shelloworldhelloworld.com", "1......"), 
+            ("https://shelloworldhelloworld.com", "2......."),
+            ("https://shelloworldhelloworld.com", "3......"),
+            ("https://shelloworldhelloworld.com", "namenamename"),
+            ("https://shelloworldhelloworld.com", "naggggggname")
+    ]
+    print(create_message(input_long))
+    print(create_message(input_short))
+    print(f"Keyboard Passed (Please manually check ouput)")
+

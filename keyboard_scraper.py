@@ -15,13 +15,15 @@ def _get_all_recent():
         result.append((link, title))
     return result
 
-async def get_title(url):
+def get_title(url):
     source = urllib.request.urlopen(url).read()
     soup = bs.BeautifulSoup(source, 'html.parser')
     tags = soup.find("div", {"class": "cat_bar"})
     return tags.text.strip().strip("Author").strip()
 
 if __name__ == "__main__":
+    # _get_all_recent test
     list = _get_all_recent()
     print(list[0][0])
     print(list[0][1])
+    print("\n Passed, Please manually check output")
