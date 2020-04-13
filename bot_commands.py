@@ -29,7 +29,7 @@ async def _testing(ctx, *args):
 #################
 def is_target(m):
     result = False
-    if str(m.channel.id) in purge_target.keys():
+    if m.channel.id in purge_target.keys():
         result = m.author.discriminator == purge_target[m.channel.id]["discriminator"]
     return result
 
