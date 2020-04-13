@@ -26,9 +26,9 @@ async def on_ready():
     print("We have logged in as {0.user}".format(bot))
 
 bot.add_command(bot_commands._testing)
-bot.add_command(bot_commands._troll)
-bot.add_command(bot_commands._purge)
-bot.add_command(bot_commands._ping_pong)
+# bot.add_command(bot_commands._troll)
+# bot.add_command(bot_commands._purge)
+# bot.add_command(bot_commands._ping_pong)
 bot.add_command(bot_commands._keyboard)
 
 bot.run(os.getenv("BOT_TOKEN"))
