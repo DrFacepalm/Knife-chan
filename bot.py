@@ -6,8 +6,10 @@ import os
 import discord
 from discord.ext import commands
 import bot_commands
+import commission_commands
 from dotenv import load_dotenv
 load_dotenv()
+
 
 bot = commands.Bot(command_prefix='!')
 
@@ -17,8 +19,9 @@ async def on_message(message):
         # add to dictionary
         bot_commands.purge_target[message.channel.id] = {"discriminator": message.author.discriminator, "name": message.author.name}
 
-    print("Marked bots for death")
-    print(bot_commands.purge_target)
+    # Commission Commands
+    await commission_commands._process_PURRRGE(message)
+
     await bot.process_commands(message)
 
 @bot.event
