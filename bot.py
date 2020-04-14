@@ -20,7 +20,7 @@ async def on_message(message):
         bot_commands.purge_target[message.channel.id] = {"discriminator": message.author.discriminator, "name": message.author.name}
 
     # Commission Commands
-    # await commission_commands._process_PURRRGE(message)
+    await commission_commands._process_PURRRGE(message)
 
     await bot.process_commands(message)
 
