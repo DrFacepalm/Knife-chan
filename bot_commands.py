@@ -62,7 +62,7 @@ async def _purge(ctx, *args):
         try:
             deleted = await ctx.channel.purge(limit=limit, check=is_target)
         except ClientException:
-            await ctx.send(":knife:I'm not too sure who to cut. Please let me know by mentioning them in your pruge command.", delete_after=20.0)
+            await ctx.send(":knife:I'm not too sure who to cut. Please let me know by mentioning them in your purge command.", delete_after=20.0)
             return
 
         name = purge_target[ctx.message.channel.id]["name"]
