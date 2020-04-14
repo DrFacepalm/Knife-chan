@@ -34,31 +34,33 @@ async def _process_PURRRGE(message):
                     deleted = await message.channel.purge(limit=limit, check=(lambda m : m.author.discriminator == target))
                     # Set target's name
                     target_name = message.mentions[0].nick if message.mentions[0].nick else message.mentions[0].name
-                    message = f":knife: It would seem that Zac has had it with you {target_name}."
+                    reply = f":knife: It would seem that Zac has had it with you {target_name}."
                     if (len(deleted) > 0):
-                        message += f"\n*Deleted {len(deleted)} out of the last {limit} messages.*"
+                        reply += f"\n*Deleted {len(deleted)} out of the last {limit} messages.*"
                     else:
-                        message += f"\n*But it seems that there was nothing of yours to delete.*"
-                    await message.channel.send(message)
+                        reply += f"\n*But it seems that there was nothing of yours to delete.*"
+                    await message.channel.send(reply)
+
                 elif (len(msg_list) > 1):
                     if msg_list[1].lower() == "all":
                         deleted = await message.channel.purge(limit=limit, check=(lambda m: True))
-                        message = f":knife: It would seem that Zac has had it with this conversation."
+                        reply = f":knife: It would seem that Zac has had it with this conversation."
                         if (len(deleted) > 0):
-                            message += f"\n*Deleted {len(deleted)} messages*"
+                            reply += f"\n*Deleted {len(deleted)} messages*"
                         else:
-                            message += f"\n*But there was inexplicably, nothing to be deleted?"
-                        await message.channel.send(message)
+                            reply += f"\n*But there was inexplicably, nothing to be deleted?*"
+                        await message.channel.send(reply)
+
                 else:
                     # does jayden's bot
                     target = 698107749166219284
                     limit = min(limit * 10, 100)
                     deleted = await message.channel.purge(limit=limit, check=(lambda m : m.author.id == target))
-                    message = f":knife: It would seem that Zac has had it with ImagusBot."
+                    reply = f":knife: It would seem that Zac has had it with ImagusBot."
                     if (len(deleted) > 0):
-                        message += f"\n*Deleted {len(deleted)} out of the last {limit} messages.*"
+                        reply += f"\n*Deleted {len(deleted)} out of the last {limit} messages.*"
                     else:
-                        message += f"\n*But it seems that there was nothing from Imagus to delete."
-                    await message.channel.send(message)
+                        reply += f"\n*But it seems that there was nothing from Imagus to delete.*"
+                    await message.channel.send(reply)
             else:
                 await message.channel.send("Wait a minute, you aren't Zac. Go be Zac and try again.\nThis incident has been reported to Administration.")   
