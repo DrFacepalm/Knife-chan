@@ -31,20 +31,18 @@ async def _process_PURRRGE(message):
                 if (len(message.mentions) > 0):
                     target = message.mentions[0].discriminator
                     deleted = await message.channel.purge(limit=limit*3, check=(lambda m : m.author.discriminator == target))
-                    print(f"Deleted {len(deleted)}")
                     # Set target's name
                     target_name = message.mentions[0].nick if message.mentions[0].nick else message.mentions[0].name
-                    await message.channel.send(f":knife: It would seem that Zac has had it with you {target_name}")
+                    await message.channel.send(f":knife: It would seem that Zac has had it with you {target_name}.\n*Deleted {len(deleted)} out of the last {limit} messages*")
                 elif (len(msg_list) > 1):
                     if msg_list[1].lower() == "all":
                         deleted = await message.channel.purge(limit=limit, check=(lambda m: True))
-                        print(f"Deleted {len(deleted)}")
-                        await message.channel.send(f":knife: It would seem that Zac has had it with this conversation")
+                        await message.channel.send(f":knife: It would seem that Zac has had it with this conversation.\n*Deleted {len(deleted)} messages*")
                 else:
                     # does jayden's bot
                     target = 698107749166219284
+                    limit = min(limit * 10, 100)
                     deleted = await message.channel.purge(limit=limit*3, check=(lambda m : m.author.id == target))
-                    print(f"Deleted {len(deleted)}")
-                    await message.channel.send(f":knife: It would seem that Zac has had it with ImagusBot.")
+                    await message.channel.send(f":knife: It would seem that Zac has had it with ImagusBot.\n*Deleted {len(deleted)} out of the last {limit} messages*")
             else:
                 await message.channel.send("Wait a minute, you aren't Zac. Go be Zac and try again.\nThis incident has been reported to Administration.")   
