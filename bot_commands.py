@@ -62,13 +62,13 @@ async def _purge(ctx, *args):
         try:
             deleted = await ctx.channel.purge(limit=limit, check=is_target)
         except ClientException:
-            await ctx.send("I'm not too sure who to cut. Please let me know by mentioning them in your pruge command.", delete_after=20.0)
+            await ctx.send(":knife:I'm not too sure who to cut. Please let me know by mentioning them in your pruge command.", delete_after=20.0)
             return
 
         name = purge_target[ctx.message.channel.id]["name"]
-        await ctx.send(f"Purged {len(deleted)} messages from {name} out of the last {limit} messages", delete_after=5.0)
+        await ctx.send(f":knife:Purged {len(deleted)} messages from {name} out of the last {limit} messages", delete_after=5.0)
     else:
-        await ctx.send("Sorry {} you don't have permission to do this".format(ctx.message.author.name), delete_after=60.0)
+        await ctx.send(":knife:Sorry {} you don't have permission to do this".format(ctx.message.author.name), delete_after=60.0)
 
 #####################
 # KEYBOARDS COMMAND #
