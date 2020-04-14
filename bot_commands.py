@@ -36,6 +36,9 @@ def is_target(m):
     result = False
     if m.channel.id in purge_target.keys():
         result = m.author.discriminator == purge_target[m.channel.id]["discriminator"]
+    else:
+        purge_target[m.channel.id] = {"discriminator": m.channel.last_message.author.discriminator, "name": m.channel.last_message.author.name}
+        result = m.author.discriminator == purge_target[m.channel.id]["discriminator"]
     return result
 
 def get_limit(args):
