@@ -38,4 +38,4 @@ async def _process_PURRRGE(message):
                     print(f"Deleted {len(deleted)}")
                     await message.channel.send(f":knife: It would seem that Zac has had it with this conversation.")
             else:
-                print("Wait a minute, you aren't Zac. Go be Zac and try again")   
+                await message.channel.send("Wait a minute, you aren't Zac. Go be Zac and try again")   
