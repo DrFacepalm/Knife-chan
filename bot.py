@@ -14,8 +14,8 @@ load_dotenv()
 bot = commands.Bot(command_prefix='!')
 
 @bot.event
-async def on_message(message):
-    if message.author.bot and message.author.name != "Knife-chan":
+async def on_message(message):                  # Not self
+    if message.author.bot and message.author.id != bot.user.id:
         # add to dictionary
         bot_commands.purge_target[message.channel.id] = {"discriminator": message.author.discriminator, "name": message.author.name}
 

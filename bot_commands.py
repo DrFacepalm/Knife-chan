@@ -1,5 +1,6 @@
 from discord.ext import commands
 from discord import Embed
+from discord import ClientException
 
 # Channel id and bot user
 purge_target = {}
@@ -32,8 +33,7 @@ def is_target(m):
     if m.channel.id in purge_target.keys():
         result = m.author.discriminator == purge_target[m.channel.id]["discriminator"]
     else:
-        purge_target[m.channel.id] = {"discriminator": m.channel.last_message.author.discriminator, "name": m.channel.last_message.author.name}
-        result = m.author.discriminator == purge_target[m.channel.id]["discriminator"]
+        raise ClientException("unknown target")
     return result
 
 def get_limit(args):
@@ -59,7 +59,11 @@ async def _purge(ctx, *args):
         # Get the number argument if exist
         limit = get_limit(args)
 
-        deleted = await ctx.channel.purge(limit=limit, check=is_target)
+        try:
+            deleted = await ctx.channel.purge(limit=limit, check=is_target)
+        except ClientException:
+            await ctx.send("I'm not too sure who to cut. Please let me know by mentioning them in your pruge command.", delete_after=20.0)
+            return
 
         name = purge_target[ctx.message.channel.id]["name"]
         await ctx.send(f"Purged {len(deleted)} messages from {name} out of the last {limit} messages", delete_after=5.0)
