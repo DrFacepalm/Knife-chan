@@ -66,7 +66,7 @@ async def _purge(ctx, *args):
             return
 
         name = purge_target[ctx.message.channel.id]["name"]
-        await ctx.send(f":knife:Purged {len(deleted)} messages from {name} out of the last {limit} messages", delete_after=30.0)
+        await ctx.send(f":knife:Purged {len(deleted)} messages from {name} out of the last {limit} messages")
     else:
         await ctx.send(":knife:Sorry {} you don't have permission to do this".format(ctx.message.author.name), delete_after=60.0)
 
