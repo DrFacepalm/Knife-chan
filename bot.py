@@ -32,5 +32,6 @@ bot.add_command(bot_commands._testing)
 bot.add_command(bot_commands._troll)
 bot.add_command(bot_commands._purge)
 bot.add_command(bot_commands._ping_pong)
+bot.add_command(bot_commands._rotate)
 
 bot.run(os.getenv("BOT_TOKEN"))

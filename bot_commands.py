@@ -1,13 +1,16 @@
 # Knife-chan discord bot, bot for personal moderation of
 # a discord server during the bot wars.
 # Author: Lucas Lin
-
 from discord.ext import commands
 from discord import Embed
+from discord import File
+import rotater
 import keyboard_scraper as ks
 
 # Channel id and bot user
 purge_target = {}
+img_rotater = rotater.ImageRotate()
+
 
 ################
 # PING COMMAND #
@@ -101,6 +104,39 @@ async def _keyboard(ctx, *args):
 @commands.command(name="imagus")
 async def _troll(ctx):
     await ctx.send("Jayden's bot sucks")
+
+##################
+# ROTATE COMMAND #
+##################
+def _has_attachment(m) -> bool:
+    return len(m.attachments) > 0;
+
+@commands.command(name="rotate")
+async def _rotate(ctx, *args):
+    # get last 20 messages
+    msges : list = ctx.channel.history(limit=20)
+
+    # go through and if a message has an attachment, set it.
+    msg = None
+    i = 0
+    async for m in msges:
+        if (_has_attachment(m)):
+            msg = m
+            break
+    
+    # if there was no message found, finish.
+    if (msg == None):
+        ctx.channel.send("Couldn't find any images to rotate...")
+        return
+
+    path : str = img_rotater.img_convert(msg.attachments[0].url, 90)
+    
+    await ctx.channel.send(file=File(path))
+
+    img_rotater.img_delete(path)
+    print(msg.attachments[0].url)
+
+
 
 
 if __name__ == "__main__":
