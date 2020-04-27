@@ -109,7 +109,7 @@ async def _troll(ctx):
 # ROTATE COMMAND #
 ##################
 def _has_attachment(m) -> bool:
-    return len(m.attachments) > 0;
+    return len(m.attachments) > 0
 
 @commands.command(name="rotate")
 async def _rotate(ctx, *args):
@@ -118,7 +118,6 @@ async def _rotate(ctx, *args):
 
     # go through and if a message has an attachment, set it.
     msg = None
-    i = 0
     async for m in msges:
         if (_has_attachment(m)):
             msg = m
@@ -133,10 +132,10 @@ async def _rotate(ctx, *args):
     angle = 90
     if (len(args)):
         if args[0].lower() == 'right' or args[0].lower() == 'r':
-            angle = -90;
+            angle = -90
         try:
             angle = int(args[0])
-        except ValueError as e:
+        except ValueError:
             pass
     else:
         # If unspecified, leave it at 90
