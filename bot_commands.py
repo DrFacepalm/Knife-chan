@@ -102,6 +102,58 @@ async def _troll(ctx):
     await ctx.send("Jayden's bot sucks")
 
 
+##################
+# ROTATE COMMAND #
+##################
+def _has_attachment(m) -> bool:
+    return len(m.attachments) > 0;
+
+@commands.command(name="rotate")
+async def _rotate(ctx, *args):
+    # get last 20 messages
+    msges : list = ctx.channel.history(limit=20)
+
+    # go through and if a message has an attachment, set it.
+    msg = None
+    i = 0
+    async for m in msges:
+        if (_has_attachment(m)):
+            msg = m
+            break
+
+    # if there was no message found, finish.
+    if (msg == None):
+        ctx.channel.send("Couldn't find any images to rotate...")
+        return
+
+    # Find the angle to work with
+    angle = 90
+    if (len(args)):
+        if args[0].lower() == 'right' or args[0].lower() == 'r':
+            angle = -90;
+        try:
+            angle = int(args[0])
+        except ValueError as e:
+            pass
+    else:
+        # If unspecified, leave it at 90
+        ctx.channel.send(":knife: Not sure which direction to rotate... So I'm going to rotate it 90 degrees to the left.\n*(You can specify 'right' or 'r' or 'left' or 'l')*")
+
+    # convert the image from the url from message, save it to server in ./Images/
+    path : str = img_rotater.img_convert(msg.attachments[0].url, angle)
+
+    ## get the name of the author
+    name : str = msg.author.name
+    if (msg.author.nick):
+        name = msg.author.nickname
+
+    # send that image
+    await ctx.channel.send(f":knife: Rotated the image sent from {name}.", file=File(path))
+
+    # once sent, delete image from files.
+    img_rotater.img_delete(path)
+
+
 if __name__ == "__main__":
     
     failed = 0
