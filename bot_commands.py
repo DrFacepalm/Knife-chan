@@ -129,12 +129,32 @@ async def _rotate(ctx, *args):
         ctx.channel.send("Couldn't find any images to rotate...")
         return
 
-    path : str = img_rotater.img_convert(msg.attachments[0].url, 90)
-    
-    await ctx.channel.send(file=File(path))
+    # Find the angle to work with
+    angle = 90
+    if (len(args)):
+        if args[0].lower() == 'right' or args[0].lower() == 'r':
+            angle = -90;
+        try:
+            angle = int(args[0])
+        except ValueError as e:
+            pass
+    else:
+        # If unspecified, leave it at 90
+        ctx.channel.send(":knife: Not sure which direction to rotate... So I'm going to rotate it 90 degrees to the left.\n*(You can specify 'right' or 'r' or 'left' or 'l')*")
 
+    # convert the image from the url from message, save it to server in ./Images/
+    path : str = img_rotater.img_convert(msg.attachments[0].url, angle)
+
+    ## get the name of the author
+    name : str = msg.author.name
+    if (msg.author.nick):
+        name = msg.author.nickname
+
+    # send that image
+    await ctx.channel.send(f":knife: Rotated the image sent from {name}.", file=File(path))
+
+    # once sent, delete image from files.
     img_rotater.img_delete(path)
-    print(msg.attachments[0].url)
 
 
 

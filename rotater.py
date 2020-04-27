@@ -11,6 +11,7 @@ class ImageRotate:
         for path in self.images:
             os.remove(path)
     
+    # rotates an image given its filepath
     # returns path of the rotated image
     def _img_rotate(self, filepath: str, degrees: int) -> str:
         img : Image = Image.open(filepath)
@@ -24,8 +25,10 @@ class ImageRotate:
 
         out_path = "./Images/" + file_name
         out.save(out_path, img.format)
+        self.images.append(out_path)
         return out_path
 
+    # downloads an image from url
     # returns path of the downloaded image
     def _img_save(self, url: str) -> str:
         Path("./Images/Downloads").mkdir(parents=True, exist_ok=True)
