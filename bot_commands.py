@@ -1,9 +1,11 @@
 from discord.ext import commands
 from discord import Embed
 from discord import ClientException
+import rotater
 
 # Channel id and bot user
 purge_target = {}
+img_rotater = rotater.ImageRotate()
 
 ################
 # PING COMMAND #
