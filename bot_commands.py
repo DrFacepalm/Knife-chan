@@ -147,7 +147,7 @@ async def _rotate(ctx, *args):
     ## get the name of the author
     name : str = msg.author.name
     if (msg.author.nick):
-        name = msg.author.nickname
+        name = msg.author.nick
 
     # send that image
     await ctx.channel.send(f":knife: Rotated the image sent from {name}.", file=File(path))
