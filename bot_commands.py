@@ -139,7 +139,7 @@ async def _rotate(ctx, *args):
             pass
     else:
         # If unspecified, leave it at 90
-        ctx.channel.send(":knife: Not sure which direction to rotate... So I'm going to rotate it 90 degrees to the left.\n*(You can specify 'right' or 'r' or 'left' or 'l')*")
+        await ctx.channel.send(":knife: Not sure which direction to rotate... So I'm going to rotate it 90 degrees to the left.\n*(You can specify 'right' or 'r' or 'left' or 'l')*")
 
     # convert the image from the url from message, save it to server in ./Images/
     path : str = img_rotater.img_convert(msg.attachments[0].url, angle)
